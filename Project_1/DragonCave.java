@@ -22,8 +22,8 @@ public class DragonCave {
                         "the dragon is friendly..\n" +
                         "will share his treasure with you");
                 break;
-        };
-    };
+        }
+    }
     public static void main(String[] args) {
 
         //Intro
@@ -40,7 +40,25 @@ public class DragonCave {
 
         //Taking Input from user
         Scanner sc = new Scanner(System.in);
-        int caveNum = sc.nextInt();
+        int caveNum = 0;
+        boolean status = true;
+
+        while(status){
+            try {
+                if (sc.hasNextInt()) {
+                    caveNum = sc.nextInt();
+                    status = false;
+                } else {
+                    throw new DragonCaveCustomException("\n**Please Enter the Integer Only.**\n");
+                }
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+                System.out.print("Enter the No Please: ");
+                //main(null);
+                sc = new Scanner(System.in);
+            }
+
+        }
         System.out.print("You Enter the No: " + caveNum + "\n");
 
         //checking the number for cave
