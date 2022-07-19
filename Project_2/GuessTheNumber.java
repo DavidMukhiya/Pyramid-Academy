@@ -44,7 +44,26 @@ public class GuessTheNumber {
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello! What is your Name?");
         System.out.println("");
-        String name = sc.next();
+
+
+        String name = "";
+
+        try {
+            //only check if whether the input is fully Integer or not.
+            if (!sc.hasNextInt()) {
+                name = sc.next();
+                if (name.length() < 2) {
+                    throw new GuessTheNumberCustomException("Name should be at least of length 2");
+                }
+            } else {
+                throw new GuessTheNumberCustomException("Please enter your name. You type only Number.");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("try Again");
+            main(null);
+        }
+
         System.out.println("\nWell " + name + ", I am thinking of a number between 1 and 20.\n" +
                 "Take a guess.");
 
@@ -52,24 +71,33 @@ public class GuessTheNumber {
         //checking for 6 tires and also guessing the number.
         while (i < 7) {
             System.out.print("\nEnter Your Number: ");
-            int guessNum = sc.nextInt();
-            System.out.println("");
-            if (guessNum == comSecretNum) {
-                System.out.println("\nGood Job, " + name + "! You guessed my number in " + i + " guesses!.");
-                //if user wants to play again
-                GuessTheNumber.checkPlayAgain(sc);
-                break;
-                //GuessTheNumber.newGame();
-            } else if (guessNum > comSecretNum) {
-                System.out.println("Your guess is too high.");
-                i++;
-            } else {
-                System.out.println("Your guess is too low");
-                i++;
+            try {
+                if (sc.hasNextInt()) {
+                    int guessNum = sc.nextInt();
+                    System.out.println("");
+                    if (guessNum == comSecretNum) {
+                        System.out.println("\nGood Job, " + name + "! You guessed my number in " + i + " guesses!.");
+                        //if user wants to play again
+                        GuessTheNumber.checkPlayAgain(sc);
+                        break;
+                        //GuessTheNumber.newGame();
+                    } else if (guessNum > comSecretNum) {
+                        System.out.println("Your guess is too high.");
+                        i++;
+                    } else {
+                        System.out.println("Your guess is too low");
+                        i++;
+                    }
+                } else {
+                    throw new GuessTheNumberCustomException("You didn't enter the no.");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                sc= new Scanner(System.in);
             }
         }
-        //return no of tries.
-        return i;
+            //return no of tries.
+            return i;
     }
 
     public static void main(String[] args) {
